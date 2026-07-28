@@ -12,11 +12,7 @@ export default function Footer() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "40px" }}>
           <div>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", textDecoration: "none" }}>
-              <div style={{ width: "28px", height: "28px", borderRadius: "7px", background: "linear-gradient(135deg, #a51538, #d4213d)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                </svg>
-              </div>
+              <img src="/logo.png" alt="TOMAN Logo" style={{ width: "32px", height: "32px", objectFit: "contain" }} />
               <span style={{ color: "#fff" }}>TOMAN</span>
             </Link>
             <p style={{ marginTop: "16px", fontSize: "14px", color: "#555", lineHeight: "1.7" }}>{t.footer.description}</p>

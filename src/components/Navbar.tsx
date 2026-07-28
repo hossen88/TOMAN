@@ -38,12 +38,8 @@ export default function Navbar() {
           padding: "14px 24px",
         }}
       >
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.5px", textDecoration: "none" }}>
-          <div style={{ width: "32px", height: "32px", borderRadius: "8px", background: "linear-gradient(135deg, #a51538, #d4213d)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-          </div>
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "22px", fontWeight: "800", letterSpacing: "-0.5px", textDecoration: "none" }}>
+          <img src="/logo.png" alt="TOMAN Logo" style={{ width: "36px", height: "36px", objectFit: "contain" }} />
           <span style={{ color: "#ffffff" }}>TOMAN</span>
         </Link>
 

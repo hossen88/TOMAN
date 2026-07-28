@@ -92,12 +92,8 @@ export default function LoginPage() {
     <div style={{ minHeight: "100vh", backgroundColor: "#0a0a0a", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
       <div style={{ width: "100%", maxWidth: "440px" }}>
         <div style={{ textAlign: "center", marginBottom: "48px" }}>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "10px", fontSize: "28px", fontWeight: "800", textDecoration: "none", marginBottom: "16px" }}>
-            <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, #a51538, #d4213d)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-              </svg>
-            </div>
+          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "12px", fontSize: "28px", fontWeight: "800", textDecoration: "none", marginBottom: "16px" }}>
+            <img src="/logo.png" alt="TOMAN Logo" style={{ width: "48px", height: "48px", objectFit: "contain" }} />
             <span style={{ color: "#fff" }}>TOMAN</span>
           </Link>
           <h1 style={{ fontSize: "28px", fontWeight: "800", color: "#ffffff", marginBottom: "8px" }}>Connect Your Account</h1>
