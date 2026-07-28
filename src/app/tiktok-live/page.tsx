@@ -22,6 +22,7 @@ export default function TikTokLivePage() {
   const [origin, setOrigin] = useState("");
 
   useEffect(() => {
+    setOrigin(window.location.origin);
     let user = "";
     const savedUser = localStorage.getItem("toman_user");
     if (savedUser) {
@@ -188,11 +189,11 @@ export default function TikTokLivePage() {
               <div style={{ display: "flex", gap: "8px" }}>
                 <input
                   readOnly
-                  value={`${window.location.origin}/overlay/tiktok-live?user=${username || "YOUR_USERNAME"}`}
+                  value={`${origin}/overlay/tiktok-live?user=${username || "YOUR_USERNAME"}`}
                   style={{ flex: 1, padding: "12px 16px", background: "#0a0a0a", border: "1px solid #333", borderRadius: "8px", color: "#a51538", fontSize: "13px", fontFamily: "monospace" }}
                 />
                 <button
-                  onClick={() => navigator.clipboard.writeText(`${window.location.origin}/overlay/tiktok-live?user=${username || "YOUR_USERNAME"}`)}
+                  onClick={() => navigator.clipboard.writeText(`${origin || (typeof window !== "undefined" ? window.location.origin : "")}/overlay/tiktok-live?user=${username || "YOUR_USERNAME"}`)}
                   style={{ padding: "12px 20px", background: "#a51538", border: "none", borderRadius: "8px", color: "#fff", fontWeight: "600", cursor: "pointer", fontFamily: "inherit" }}
                 >
                   Copy

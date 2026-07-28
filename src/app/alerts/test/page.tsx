@@ -84,9 +84,9 @@ export default function TestAlertsPage() {
             <div style={{ fontSize: "12px", color: "#666", marginBottom: "8px" }}>{"\u0631\u0627\u0628\u0637 \u0627\u0644\u0648\u064A\u062C\u062A \u0641\u064A OBS:"}</div>
             <div style={{ display: "flex", gap: "6px" }}>
               <code style={{ flex: 1, padding: "8px 10px", background: "#1a1a1a", borderRadius: "6px", color: "#a51538", fontSize: "11px", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {`${window.location.origin}/overlay/alerts?user=`}{username}
+                {`${typeof window !== "undefined" ? window.location.origin : ""}/overlay/alerts?user=`}{username}
               </code>
-              <button onClick={() => navigator.clipboard.writeText(`${window.location.origin}/overlay/alerts?user=${username}`)}
+              <button onClick={() => navigator.clipboard.writeText(`${typeof window !== "undefined" ? window.location.origin : ""}/overlay/alerts?user=${username}`)}
                 style={{ padding: "8px 12px", background: "#a51538", border: "none", borderRadius: "6px", color: "#fff", fontSize: "11px", fontWeight: "600", cursor: "pointer", flexShrink: 0 }}>
                 {"\u0646\u0633\u062E"}
               </button>
