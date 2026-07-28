@@ -256,6 +256,9 @@ export default function AlertSettingsPage() {
   const [activeTab, setActiveTab] = useState<"like" | "donation">("like");
   const [username, setUsername] = useState("");
   const [testingAlert, setTestingAlert] = useState<string | null>(null);
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => { setOrigin(window.location.origin); }, []);
 
   useEffect(() => {
     try {
@@ -575,10 +578,10 @@ export default function AlertSettingsPage() {
                       border: "1px solid #252525",
                     }}
                   >
-                    {`${window.location.origin}/overlay/alerts?user=${username}`}
+                    {`${origin}/overlay/alerts?user=${username}`}
                   </code>
                   <button
-                    onClick={() => navigator.clipboard.writeText(`${window.location.origin}/overlay/alerts?user=${username}`)}
+                    onClick={() => navigator.clipboard.writeText(`${origin}/overlay/alerts?user=${username}`)}
                     style={{
                       padding: "8px 10px",
                       background: "#a51538",

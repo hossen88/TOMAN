@@ -19,6 +19,7 @@ export default function TikTokLivePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [streamActive, setStreamActive] = useState(false);
+  const [origin, setOrigin] = useState("");
 
   useEffect(() => {
     let user = "";

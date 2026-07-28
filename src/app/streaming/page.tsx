@@ -97,8 +97,10 @@ export default function StreamingAppsPage() {
     else localStorage.removeItem("selectedStreamingApp");
   };
 
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+  const [baseUrl, setBaseUrl] = useState("");
   const selected = streamingApps.find((a) => a.id === selectedApp);
+
+  useEffect(() => { setBaseUrl(baseUrl); }, []);
 
   const getEmbedCode = () => {
     return `<iframe src="${baseUrl}/overlay/monitor?user=${username || 'YOUR_USERNAME'}" width="350" height="400" frameborder="0" style="background: transparent;"></iframe>`;
@@ -270,11 +272,11 @@ ${baseUrl}/overlay/monitor?user=${username || 'YOUR_USERNAME'}`;
               <div style={{ display: "flex", gap: "8px" }}>
                 <input
                   readOnly
-                  value={`${window.location.origin}/overlay/monitor?user=${username || 'YOUR_USERNAME'}`}
+                  value={`${baseUrl}/overlay/monitor?user=${username || 'YOUR_USERNAME'}`}
                   style={{ flex: 1, padding: "10px 14px", background: "#111", border: "1px solid #333", borderRadius: "8px", color: selected.color, fontSize: "13px", fontFamily: "monospace" }}
                 />
                 <button
-                  onClick={() => navigator.clipboard.writeText(`${window.location.origin}/overlay/monitor?user=${username || 'YOUR_USERNAME'}`)}
+                  onClick={() => navigator.clipboard.writeText(`${baseUrl}/overlay/monitor?user=${username || 'YOUR_USERNAME'}`)}
                   style={{ padding: "10px 16px", background: selected.color, border: "none", borderRadius: "8px", color: "#fff", fontWeight: "600", cursor: "pointer", fontFamily: "inherit" }}
                 >
                   Copy

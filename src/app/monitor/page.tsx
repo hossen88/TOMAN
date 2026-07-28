@@ -28,6 +28,7 @@ interface Issue {
 }
 
 export default function MonitorPage() {
+  const [origin, setOrigin] = useState("");
   const [health, setHealth] = useState<StreamHealth>({
     status: "good",
     bitrate: 3000,
@@ -46,6 +47,7 @@ export default function MonitorPage() {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
+    setOrigin(window.location.origin);
     const savedUser = localStorage.getItem("toman_user");
     if (savedUser) {
       try { const u = JSON.parse(savedUser); if (u.username) setUsername(u.username); } catch (e) {}
@@ -376,7 +378,7 @@ export default function MonitorPage() {
             Add a <strong style={{ color: "#fff" }}>Browser Source</strong> in OBS to show live monitor on your stream:
           </p>
           <code style={{ display: "block", padding: "12px", background: "#1a1a1a", borderRadius: "8px", color: "#a51538", fontSize: "13px", fontFamily: "monospace" }}>
-            {`${window.location.origin}/overlay/monitor?user=YOUR_USERNAME`}
+            {`${origin}/overlay/monitor?user=YOUR_USERNAME`}
           </code>
         </div>
       </div>
