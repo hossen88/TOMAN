@@ -80,26 +80,32 @@ avatarWrap.innerHTML='<img src="'+url+'" onerror="this.parentNode.innerHTML=\'<s
 var username=params.get('user');
 if(!username)return;
 var clean=username.replace("@","").trim();
-fetch("/api/user/tiktok?username="+clean+"&_t="+Date.now())
-.then(function(r){return r.json();})
-.then(function(d){
-if(d.avatar)setAvatar(d.avatar);
-if(d.followers>0){show(d.followers);}
-pill.classList.add('show');
-}).catch(function(){pill.classList.add('show');});
-function poll(){
-fetch("/api/widgets/state?widget=total-followers&_t="+Date.now())
-.then(function(r){return r.json();})
-.then(function(d){
-if(d.demo){
-var fakeCount=Math.floor(Math.random()*50000)+1000;
-show(fakeCount);
-fetch("/api/widgets/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({widget:"total-followers",demo:false})});
+
+function fetchRealFollowers() {
+  fetch("/api/user/tiktok?username="+clean+"&_t="+Date.now())
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(d.avatar)setAvatar(d.avatar);
+    if(d.followers && d.followers>0){show(d.followers);}
+    pill.classList.add('show');
+  }).catch(function(){pill.classList.add('show');});
 }
-}).catch(function(){});
+
+fetchRealFollowers();
+setInterval(fetchRealFollowers, 15000);
+
+function pollState(){
+  fetch("/api/widgets/state?widget=total-followers&_t="+Date.now())
+  .then(function(r){return r.json();})
+  .then(function(d){
+    if(d.demo){
+      fetchRealFollowers();
+      fetch("/api/widgets/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({widget:"total-followers",demo:false})});
+    }
+  }).catch(function(){});
 }
-poll();
-setInterval(poll,5000);
+pollState();
+setInterval(pollState,5000);
 })();
 </script>
 </body>

@@ -51,18 +51,23 @@ export default function TotalFollowersWidget() {
     const clean = username.replace("@", "").trim();
     let active = true;
 
-    fetch("/api/user/tiktok?username=" + clean + "&_t=" + Date.now())
-      .then((r) => r.json())
-      .then((d) => {
-        if (!active) return;
-        if (d.avatar) setAvatar(d.avatar);
-        if (d.followers > 0) {
-          targetRef.current = d.followers;
-          setCount(d.followers);
-        }
-        setShow(true);
-      })
-      .catch(() => { setShow(true); });
+    const fetchRealFollowers = () => {
+      fetch("/api/user/tiktok?username=" + clean + "&_t=" + Date.now())
+        .then((r) => r.json())
+        .then((d) => {
+          if (!active) return;
+          if (d.avatar) setAvatar(d.avatar);
+          if (d.followers && d.followers > 0) {
+            targetRef.current = d.followers;
+            setCount(d.followers);
+          }
+          setShow(true);
+        })
+        .catch(() => { setShow(true); });
+    };
+
+    fetchRealFollowers();
+    const realFollowersInterval = setInterval(fetchRealFollowers, 15000);
 
     const poll = async () => {
       if (!active) return;
@@ -70,10 +75,7 @@ export default function TotalFollowersWidget() {
         const res = await fetch("/api/widgets/state?widget=total-followers&_t=" + Date.now());
         const data = await res.json();
         if (data.demo) {
-          targetRef.current = Math.floor(Math.random() * 50000) + 1000;
-          setCount(targetRef.current);
-          setWidgetKey((k) => k + 1);
-          setShow(true);
+          fetchRealFollowers();
           await fetch("/api/widgets/state", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -83,7 +85,7 @@ export default function TotalFollowersWidget() {
       } catch (e) {}
     };
 
-    const pollInterval = setInterval(poll, 200);
+    const pollInterval = setInterval(poll, 3000);
 
     let retryCount = 0;
     let evtSource: EventSource | null = null;
@@ -124,6 +126,7 @@ export default function TotalFollowersWidget() {
 
     return () => {
       active = false;
+      clearInterval(realFollowersInterval);
       clearInterval(pollInterval);
       evtSource?.close();
       if (animRef.current) cancelAnimationFrame(animRef.current);
