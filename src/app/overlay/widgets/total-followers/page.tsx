@@ -227,7 +227,7 @@ export default function TotalFollowersWidget() {
 
   const wrapperStyle = { display: "flex", alignItems: "center", justifyContent: "center", background: "transparent", fontFamily: "'Cairo', 'Segoe UI', sans-serif" } as const;
 
-  if (preview) {
+  if (false) {
     return <div style={wrapperStyle}>{widgetContent}</div>;
   }
 

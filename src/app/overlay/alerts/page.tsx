@@ -9,6 +9,7 @@ interface Alert {
   message?: string;
   amount?: number;
   timestamp: number;
+  connected?: boolean;
 }
 
 const alertStyles: Record<string, { color: string; colorLight: string; title: string; bg: string }> = {
