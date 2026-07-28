@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "docs": "Documentation",
+    "about": "About",
+    "login": "Login",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "badge": "Free & Open Source",
+    "title": "Supercharge Your TikTok LIVE",
+    "subtitle": "The ultimate toolkit for TikTok streamers. Add interactive overlays, sound alerts, text-to-speech, chatbot, and more to make your streams unforgettable.",
+    "cta": "Get Started Free",
+    "ctaSecondary": "View Documentation",
+    "stats": {
+      "users": "100%",
+      "usersLabel": "Free Forever",
+      "streams": "24/7",
+      "streamsLabel": "Always Available",
+      "gifts": "0$s",
+      "giftsLabel": "No Hidden Fees"
+    }
+  },
+  "features": {
+    "title": "Everything You Need to Stream Better",
+    "subtitle": "Powerful tools designed specifically for TikTok LIVE creators",
+    "soundAlerts": {
+      "title": "Sound Alerts",
+      "description": "Automatically play custom sounds when you receive gifts, follows, or any event. Keep your audience engaged with audio feedback."
+    },
+    "tts": {
+      "title": "Text-to-Speech",
+      "description": "Let your viewers hear their messages read aloud with customizable voices, speeds, and volumes. Make every comment matter."
+    },
+    "overlays": {
+      "title": "Interactive Overlays",
+      "description": "Beautiful, customizable overlays for OBS, TikTok Live Studio, and Streamlabs. Display alerts, goals, and widgets on your stream."
+    },
+    "chatbot": {
+      "title": "Chatbot",
+      "description": "Automated chat responses, moderation, and custom commands. Keep your chat clean and engaging without lifting a finger."
+    },
+    "songRequests": {
+      "title": "Song Requests",
+      "description": "Let your viewers request songs from Spotify. Build a playlist together and keep the vibes going all stream long."
+    },
+    "points": {
+      "title": "Points System",
+      "description": "Reward viewers for watching, chatting, and sending gifts. Let them spend points on TTS, sound effects, and special commands."
+    },
+    "actions": {
+      "title": "Actions & Events",
+      "description": "Create custom triggers for any event. Connect to smart devices, run scripts, or control games through viewer interactions."
+    },
+    "gameIntegration": {
+      "title": "Game Integration",
+      "description": "Let viewers control your Minecraft, GTA 5, and other games through gifts. Spawn NPCs, trigger events, and more."
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Get started in 3 simple steps",
+    "step1": {
+      "title": "Connect Your Account",
+      "description": "Sign up with your TikTok account and authorize the connection. Takes less than 30 seconds."
+    },
+    "step2": {
+      "title": "Configure Your Tools",
+      "description": "Choose your alerts, overlays, chatbot settings, and customize everything to match your brand."
+    },
+    "step3": {
+      "title": "Go Live & Engage",
+      "description": "Add our browser sources to your streaming software and start interacting with your audience like never before."
+    }
+  },
+  "compatibility": {
+    "title": "Works With Your Setup",
+    "subtitle": "Compatible with all major streaming software",
+    "tiktokStudio": "TikTok LIVE Studio",
+    "obs": "OBS Studio",
+    "streamlabs": "Streamlabs",
+    "meld": "Meld Studio"
+  },
+  "pricing": {
+    "title": "Everything is Free",
+    "subtitle": "No hidden fees, no premium plans. All features included.",
+    "free": {
+      "name": "TOMAN",
+      "price": "$0",
+      "period": "forever",
+      "features": [
+        "Sound Alerts",
+        "Text-to-Speech",
+        "Interactive Overlays",
+        "Chatbot",
+        "Song Requests",
+        "Points System",
+        "Actions & Events",
+        "Game Integration",
+        "Unlimited Browser Sources",
+        "Priority Support"
+      ],
+      "cta": "Get Started Free"
+    }
+  },
+  "about": {
+    "title": "About TOMAN",
+    "description": "TOMAN is an open-source project built by streamers, for streamers. We believe every creator deserves access to professional streaming tools without paying premium prices.",
+    "mission": "Our mission is to make TikTok streaming more interactive, fun, and engaging for creators and viewers alike."
+  },
+  "docs": {
+    "title": "Documentation",
+    "subtitle": "Everything you need to get up and running"
+  },
+  "footer": {
+    "description": "The ultimate toolkit for TikTok LIVE streamers. Free and open source.",
+    "product": "Product",
+    "resources": "Resources",
+    "company": "Company",
+    "features": "Features",
+    "pricing": "Pricing",
+    "docs": "Documentation",
+    "blog": "Blog",
+    "changelog": "Changelog",
+    "community": "Community",
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "All rights reserved."
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<style>
+@font-face{font-family:'Stranger';src:url('/fonts/Stranger-back-in-the-Night.ttf') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
+@font-face{font-family:'Designer';src:url('/fonts/Designer.ttf') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
+#root{width:100%;height:100vh;display:flex;align-items:center;justify-content:center}
+.pill{display:none;align-items:center;gap:0;padding:8px 0;background:rgba(10,10,10,0.92);border-radius:30px;min-width:200px;overflow:hidden;position:relative;animation:fadeIn .3s ease-out}
+.pill.show{display:flex}
+@keyframes fadeIn{0%{opacity:0;transform:scale(.85) translateY(10px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes shimmer{0%{transform:translateX(-100%) skewX(-15deg)}100%{transform:translateX(400%) skewX(-15deg)}}
+@keyframes pulseBorder{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 8px 2px var(--accent)}}
+.shimmer-wrap{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;border-radius:30px;pointer-events:none}
+.shimmer-bar{position:absolute;top:0;left:-100%;width:40%;height:100%;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.03) 30%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.03) 70%,transparent 100%);animation:shimmer 3s ease-in-out infinite;pointer-events:none}
+.avatar-wrap{position:relative;flex-shrink:0;margin-left:10px;width:40px;height:40px;border-radius:50%;overflow:hidden}
+.avatar-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.label{font-family:'Designer',sans-serif;margin-left:10px;font-size:10px;font-weight:600;line-height:1;white-space:nowrap}
+.spacer{flex:1}
+.count-text{font-size:28px;font-weight:900;padding:0 20px 0 10px;white-space:nowrap;transition:transform .2s ease}
+.count-text.bump{transform:scale(1.15)}
+</style>
+</head>
+<body>
+<div id="root">
+<div class="pill" id="pill">
+<div class="shimmer-wrap"><div class="shimmer-bar"></div></div>
+<div class="avatar-wrap" id="avatarWrap"></div>
+<div class="label" id="labelEl">Followers</div>
+<div class="spacer"></div>
+<div class="count-text" id="countText">0</div>
+</div>
+</div>
+<script>
+(function(){
+var params=new URLSearchParams(window.location.search);
+var color=params.get('color')||'#a51538';
+document.getElementById('pill').style.border='1px solid '+color+'30';
+document.getElementById('pill').style.boxShadow='0 0 40px '+color+'20';
+document.getElementById('avatarWrap').style.border='2px solid '+color+'50';
+document.getElementById('avatarWrap').style.boxShadow='0 0 10px '+color+'40';
+document.getElementById('labelEl').style.color=color+'cc';
+document.getElementById('countText').style.color=color;
+document.getElementById('countText').style.textShadow='0 0 12px '+color+'40';
+var pill=document.getElementById('pill');
+var countEl=document.getElementById('countText');
+var avatarWrap=document.getElementById('avatarWrap');
+var currentCount=0;
+var animFrame=null;
+function animateCount(from,to){
+var start=performance.now();
+var duration=600;
+function tick(now){
+var elapsed=now-start;
+var progress=Math.min(elapsed/duration,1);
+var eased=1-Math.pow(1-progress,3);
+var val=Math.round(from+(to-from)*eased);
+countEl.textContent=val.toLocaleString();
+if(progress<1){animFrame=requestAnimationFrame(tick)}
+else{countEl.classList.remove('bump');setTimeout(function(){countEl.classList.add('bump');setTimeout(function(){countEl.classList.remove('bump')},200)},10)}
+}
+if(animFrame)cancelAnimationFrame(animFrame);
+countEl.classList.add('bump');
+animFrame=requestAnimationFrame(tick);
+}
+function show(count){
+if(count!==currentCount){animateCount(currentCount,count);currentCount=count;}
+pill.classList.add('show');
+}
+function setAvatar(url){
+if(!url){avatarWrap.innerHTML='<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="'+color+'" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';return;}
+avatarWrap.innerHTML='<img src="'+url+'" onerror="this.parentNode.innerHTML=\'<svg width=28 height=28 viewBox=&quot;0 0 24 24&quot; fill=none stroke=&quot;'+color+'&quot; stroke-width=1.5><path d=&quot;M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2&quot;/><circle cx=9 cy=7 r=4/><path d=&quot;M23 21v-2a4 4 0 0 0-3-3.87&quot;/><path d=&quot;M16 3.13a4 4 0 0 1 0 7.75&quot;/></svg>\'"/>';
+}
+var username=params.get('user');
+if(!username)return;
+var clean=username.replace("@","").trim();
+fetch("/api/user/tiktok?username="+clean+"&_t="+Date.now())
+.then(function(r){return r.json();})
+.then(function(d){
+if(d.avatar)setAvatar(d.avatar);
+if(d.followers>0){show(d.followers);}
+pill.classList.add('show');
+}).catch(function(){pill.classList.add('show');});
+function poll(){
+fetch("/api/widgets/state?widget=total-followers&_t="+Date.now())
+.then(function(r){return r.json();})
+.then(function(d){
+if(d.demo){
+var fakeCount=Math.floor(Math.random()*50000)+1000;
+show(fakeCount);
+fetch("/api/widgets/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({widget:"total-followers",demo:false})});
+}
+}).catch(function(){});
+}
+poll();
+setInterval(poll,5000);
+})();
+</script>
+</body>
+</html>
