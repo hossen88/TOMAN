@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+:root {
+  --bg-dark: #070709;
+  --bg-card: rgba(18, 18, 26, 0.65);
+  --bg-card-hover: rgba(28, 28, 40, 0.75);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(255, 30, 86, 0.35);
+  --primary-crimson: #e81548;
+  --primary-glow: rgba(232, 21, 72, 0.4);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,29 +18,38 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #070709;
+  color: #ffffff;
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #070709;
+  color: #f1f5f9;
+  font-family: 'Alexandria', 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-a, a:hover, a:focus, a:visited, a:active {
+a, a:hover, a:focus, a:visited, a:active,
+button, span, p, h1, h2, h3, h4, h5, h6 {
   text-decoration: none !important;
+  text-decoration-line: none !important;
+}
+
+a {
   color: inherit;
 }
+
 
 button {
   font-family: inherit;
 }
 
 ::selection {
-  background-color: rgba(165, 21, 56, 0.3);
+  background-color: rgba(232, 21, 72, 0.4);
   color: #ffffff;
 }
 
@@ -39,20 +58,107 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: #070709;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #1e1e28;
   border-radius: 4px;
+  border: 2px solid #070709;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #e81548;
 }
 
 [dir="rtl"] {
   text-align: right;
+}
+
+/* Glassmorphism & UI Utilities */
+.glass-panel {
+  background: rgba(15, 15, 22, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(22, 22, 32, 0.6) 0%, rgba(14, 14, 20, 0.4) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(232, 21, 72, 0.35);
+  box-shadow: 0 15px 35px -10px rgba(232, 21, 72, 0.2);
+  transform: translateY(-3px);
+}
+
+.gradient-text-white {
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-crimson {
+  background: linear-gradient(135deg, #ff3b68 0%, #e81548 50%, #990a2c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-btn-crimson {
+  background: linear-gradient(135deg, #ff2a5b 0%, #e81548 60%, #b80c35 100%);
+  box-shadow: 0 4px 20px rgba(232, 21, 72, 0.4);
+  transition: all 0.3s ease;
+}
+
+.gradient-btn-crimson:hover {
+  box-shadow: 0 8px 30px rgba(232, 21, 72, 0.6);
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.badge-crimson {
+  background: rgba(232, 21, 72, 0.12);
+  border: 1px solid rgba(232, 21, 72, 0.3);
+  color: #ff4d79;
+}
+
+/* Animations */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; filter: blur(70px); }
+  50% { opacity: 0.7; filter: blur(90px); }
+}
+
+@keyframes livePulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.animate-float {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: pulseGlow 5s ease-in-out infinite;
+}
+
+.live-indicator-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #10b981;
+  border-radius: 50%;
+  animation: livePulse 2s infinite;
 }
 
 nextjs-portal,
@@ -67,3 +173,4 @@ nextjs-portal,
   position: fixed !important;
   z-index: -9999 !important;
 }
+

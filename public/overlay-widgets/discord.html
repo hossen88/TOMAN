@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Discord Overlay Widget</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700;800;900&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent !important;font-family:'Alexandria',sans-serif;overflow:hidden;height:100vh;display:flex;align-items:center;justify-content:center}
+
+.widget-stage {
+  position: relative;
+  width: 460px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+}
+
+/* 1. Logo Layer & Movement Keyframes */
+.logo-layer {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  z-index: 2;
+  animation: logoMove 9.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+.logo-layer img {
+  width: 85px;
+  height: 85px;
+  object-fit: contain;
+}
+
+@keyframes logoMove {
+  0%, 22% {
+    opacity: 1;
+    transform: translateX(145px) scale(1);
+    filter: drop-shadow(0 0 20px rgba(232, 21, 72, 0.8));
+  }
+  24% {
+    opacity: 1;
+    transform: translateX(145px) scale(1.08);
+    filter: drop-shadow(0 0 28px rgba(232, 21, 72, 1));
+  }
+  44% {
+    opacity: 1;
+    transform: translateX(-148px) scale(1);
+    filter: drop-shadow(0 0 18px rgba(232, 21, 72, 0.8));
+  }
+  75% {
+    opacity: 1;
+    transform: translateX(-148px) scale(1);
+    filter: drop-shadow(0 0 18px rgba(232, 21, 72, 0.8));
+  }
+  77% {
+    opacity: 1;
+    transform: translateX(-148px) scale(1.05);
+    filter: drop-shadow(0 0 28px rgba(232, 21, 72, 1));
+  }
+  94% {
+    opacity: 1;
+    transform: translateX(145px) scale(1);
+    filter: drop-shadow(0 0 20px rgba(232, 21, 72, 0.8));
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(145px) scale(1);
+    filter: drop-shadow(0 0 20px rgba(232, 21, 72, 0.8));
+  }
+}
+
+/* 2. Text Reveal Layer: Emerges from behind moving logo */
+.text-layer {
+  position: absolute;
+  left: 108px;
+  width: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  background: transparent !important;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: textRevealFromBehind 9.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 15px, #000 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 15px, #000 100%);
+}
+
+.server-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+  background: transparent !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.discord-link {
+  font-size: 18px;
+  font-weight: 800;
+  color: #ff2a5b;
+  direction: ltr;
+  text-align: left;
+  background: transparent !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes textRevealFromBehind {
+  0%, 23% {
+    opacity: 0;
+    clip-path: inset(-20px -20px -20px 100%);
+  }
+  24% {
+    opacity: 1;
+    clip-path: inset(-20px -20px -20px 100%);
+  }
+  44% {
+    opacity: 1;
+    clip-path: inset(-20px -20px -20px 0%);
+  }
+  75% {
+    opacity: 1;
+    clip-path: inset(-20px -20px -20px 0%);
+  }
+  94% {
+    opacity: 1;
+    clip-path: inset(-20px -20px -20px 100%);
+  }
+  95%, 100% {
+    opacity: 0;
+    clip-path: inset(-20px -20px -20px 100%);
+  }
+}
+</style>
+</head>
+<body>
+  <div class="widget-stage">
+    
+    <!-- Text Reveal Layer -->
+    <div class="text-layer">
+      <span class="server-title">Toman Community</span>
+      <span class="discord-link" id="invite-link">discord.gg/gEPzAVkv4E</span>
+    </div>
+
+    <!-- Logo Layer -->
+    <div class="logo-layer">
+      <img src="/logo.png" alt="TOMAN">
+    </div>
+
+  </div>
+
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var link = params.get("link") || "https://discord.gg/gEPzAVkv4E";
+  var cleanLink = link.replace("https://", "").replace("http://", "");
+  
+  var linkEl = document.getElementById("discordLink");
+  if (linkEl) linkEl.textContent = cleanLink;
+})();
+</script>
+</body>
+</html>

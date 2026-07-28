@@ -4,7 +4,7 @@ export async function GET(request: NextRequest) {
   const username = request.nextUrl.searchParams.get("username");
 
   if (!username) {
-    return NextResponse.json({ error: "Username required" }, { status: 400 });
+    return NextResponse.json({ error: "اسم المستخدم مطلوب" }, { status: 400 });
   }
 
   const cleanUsername = username.replace("@", "").trim();
@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
       headers: {
         "Accept": "application/json",
       },
+      cache: "no-store",
     });
 
     const data = await res.json();
@@ -38,34 +39,17 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({
-      username: cleanUsername,
-      displayName: cleanUsername,
-      avatar: "",
-      followers: 0,
-      following: 0,
-      likes: 0,
-      videos: 0,
-      isVerified: false,
-      bio: "",
-      isLive: false,
-      bitrate: 3000,
-    });
+    return NextResponse.json(
+      { error: "حساب TikTok هذا غير موجود. يرجى التأكد من اليوزر والمحاولة مجدداً." },
+      { status: 404 }
+    );
 
   } catch (error) {
     console.error("TikTok fetch error:", error);
-    return NextResponse.json({
-      username: cleanUsername,
-      displayName: cleanUsername,
-      avatar: "",
-      followers: 0,
-      following: 0,
-      likes: 0,
-      videos: 0,
-      isVerified: false,
-      bio: "",
-      isLive: false,
-      bitrate: 3000,
-    });
+    return NextResponse.json(
+      { error: "تعذر الاتصال بـ TikTok. يرجى التأكد من اسم الحساب وتكرار المحاولة." },
+      { status: 500 }
+    );
   }
 }
+

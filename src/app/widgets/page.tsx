@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 import { useState, useEffect } from "react";
 
 const widgets = [
+  { id: "discord", title: "ودجت سيرفر الديسكورد", desc: "ودجت يتغير حركياً بين شعار المنصة ورابط الديسكورد https://discord.gg/gEPzAVkv4E", defaultColor: "#5865F2", path: "/overlay-widgets/discord.html" },
   { id: "followers", title: "المتابعة", desc: "يظهر اسم newest متابع مع صورته", defaultColor: "#a855f7", path: "/overlay-widgets/followers.html" },
   { id: "likes", title: "آخر إعجاب", desc: "يظهر إشعار عند كل إعجاب جديد", defaultColor: "#ec4899", path: "/overlay-widgets/likes.html" },
   { id: "top-rankers", title: "أفضل 3 في البث الحالي", desc: "يعرض أفضل 3 متابعين حسب التفاعل في البث", defaultColor: "#f59e0b", path: "/overlay-widgets/top-rankers.html" },
@@ -21,6 +22,135 @@ function WidgetPreview({ id, color }: { id: string; color: string }) {
   useEffect(() => {
     setWidgetKey((k) => k + 1);
   }, [color]);
+
+  if (id === "discord") {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "16px 0", background: "transparent" }}>
+        <style>{`
+          @keyframes logoMove {
+            0%, 22% {
+              opacity: 1;
+              transform: translateX(145px) scale(1);
+              filter: drop-shadow(0 0 20px rgba(232, 21, 72, 0.8));
+            }
+            24% {
+              opacity: 1;
+              transform: translateX(145px) scale(1.08);
+              filter: drop-shadow(0 0 28px rgba(232, 21, 72, 1));
+            }
+            44% {
+              opacity: 1;
+              transform: translateX(-148px) scale(1);
+              filter: drop-shadow(0 0 18px rgba(232, 21, 72, 0.8));
+            }
+            75% {
+              opacity: 1;
+              transform: translateX(-148px) scale(1);
+              filter: drop-shadow(0 0 18px rgba(232, 21, 72, 0.8));
+            }
+            77% {
+              opacity: 1;
+              transform: translateX(-148px) scale(1.05);
+              filter: drop-shadow(0 0 28px rgba(232, 21, 72, 1));
+            }
+            94% {
+              opacity: 1;
+              transform: translateX(145px) scale(1);
+              filter: drop-shadow(0 0 20px rgba(232, 21, 72, 0.8));
+            }
+            100% {
+              opacity: 1;
+              transform: translateX(145px) scale(1);
+              filter: drop-shadow(0 0 20px rgba(232, 21, 72, 0.8));
+            }
+          }
+
+          @keyframes textRevealFromBehind {
+            0%, 23% {
+              opacity: 0;
+              clip-path: inset(-20px -20px -20px 100%);
+            }
+            24% {
+              opacity: 1;
+              clip-path: inset(-20px -20px -20px 100%);
+            }
+            44% {
+              opacity: 1;
+              clip-path: inset(-20px -20px -20px 0%);
+            }
+            75% {
+              opacity: 1;
+              clip-path: inset(-20px -20px -20px 0%);
+            }
+            94% {
+              opacity: 1;
+              clip-path: inset(-20px -20px -20px 100%);
+            }
+            95%, 100% {
+              opacity: 0;
+              clip-path: inset(-20px -20px -20px 100%);
+            }
+          }
+        `}</style>
+        <div style={{ position: "relative", width: "460px", height: "120px", display: "flex", alignItems: "center", justifyContent: "center", background: "transparent" }}>
+          
+          {/* TEXT REVEAL LAYER */}
+          <div style={{
+            position: "absolute",
+            left: "108px",
+            width: "270px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            gap: "4px",
+            background: "transparent",
+            whiteSpace: "nowrap",
+            pointerEvents: "none",
+            animation: "textRevealFromBehind 9.5s cubic-bezier(0.25, 1, 0.5, 1) infinite",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0%, #000 15px, #000 100%)",
+            maskImage: "linear-gradient(to right, transparent 0%, #000 15px, #000 100%)",
+          }}>
+            <span style={{
+              fontSize: "24px",
+              fontWeight: "900",
+              color: "#ffffff",
+              letterSpacing: "-0.2px",
+              background: "transparent",
+              textShadow: "0 2px 8px rgba(0, 0, 0, 0.7)",
+            }}>
+              Toman Community
+            </span>
+            <span style={{
+              fontSize: "18px",
+              fontWeight: "800",
+              color: "#ff2a5b",
+              direction: "ltr",
+              textAlign: "left",
+              background: "transparent",
+              textShadow: "0 2px 8px rgba(0, 0, 0, 0.7)",
+            }}>
+              discord.gg/gEPzAVkv4E
+            </span>
+          </div>
+
+          {/* LOGO LAYER (Permanently visible) */}
+          <div style={{
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "transparent",
+            zIndex: 2,
+            animation: "logoMove 9.5s cubic-bezier(0.25, 1, 0.5, 1) infinite",
+          }}>
+            <img src="/logo.png" alt="TOMAN" style={{ width: "85px", height: "85px", objectFit: "contain" }} />
+          </div>
+
+        </div>
+      </div>
+    );
+  }
 
   if (id === "followers") {
     return (
@@ -401,6 +531,7 @@ function WidgetPreview({ id, color }: { id: string; color: string }) {
 }
 
 function WidgetIcon({ id, color }: { id: string; color: string }) {
+  if (id === "discord") return <svg width="22" height="22" viewBox="0 0 24 24" fill={color}><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>;
   if (id === "followers") return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
   if (id === "likes") return <svg width="22" height="22" viewBox="0 0 24 24" fill={color}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>;
   if (id === "top-rankers") return <svg width="22" height="22" viewBox="0 0 24 24" fill={color}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>;
@@ -540,7 +671,7 @@ export default function WidgetsPage() {
                 </div>
 
                 <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                  {widget.id !== "total-followers" && (
+                  {widget.id !== "total-followers" && widget.id !== "discord" && (
                     <select value={durations[widget.id] || 10} onChange={(e) => setDuration(widget.id, parseInt(e.target.value))} style={{ padding: "3px 6px", background: "#1a1a1a", border: "1px solid #333", borderRadius: "6px", color: "#fff", fontSize: "11px", cursor: "pointer" }}>
                       <option value={5}>5 ث</option>
                       <option value={10}>10 ث</option>
@@ -548,6 +679,9 @@ export default function WidgetsPage() {
                       <option value={20}>20 ث</option>
                       <option value={30}>30 ث</option>
                     </select>
+                  )}
+                  {widget.id === "discord" && (
+                    <span style={{ fontSize: "11px", color: "#5865F2", fontWeight: "700" }}>● يعمل دائماً بشكل سينمائي مستمر</span>
                   )}
                   {widget.id === "likes" && (
                     <input

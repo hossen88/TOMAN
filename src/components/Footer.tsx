@@ -7,45 +7,107 @@ export default function Footer() {
   const { t } = useI18n();
 
   return (
-    <footer style={{ borderTop: "1px solid #1a1a1a", backgroundColor: "#0a0a0a" }}>
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "56px 24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "40px" }}>
+    <footer style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)", backgroundColor: "#050508", position: "relative" }}>
+      <div style={{ maxWidth: "1240px", margin: "0 auto", padding: "64px 20px 36px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "48px" }}>
+          {/* Brand Col */}
           <div>
-            <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", textDecoration: "none" }}>
-              <img src="/logo.png" alt="TOMAN Logo" style={{ width: "32px", height: "32px", objectFit: "contain" }} />
-              <span style={{ color: "#fff" }}>TOMAN</span>
+            <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+              <div style={{ position: "relative", width: "32px", height: "32px" }}>
+                <img src="/logo.png" alt="TOMAN Logo" style={{ width: "32px", height: "32px", objectFit: "contain" }} />
+              </div>
+              <span style={{ fontSize: "20px", fontWeight: "900", letterSpacing: "-0.5px", color: "#ffffff" }}>
+                TOMAN<span style={{ color: "#e81548" }}>.</span>
+              </span>
             </Link>
-            <p style={{ marginTop: "16px", fontSize: "14px", color: "#555", lineHeight: "1.7" }}>{t.footer.description}</p>
+            <p style={{ marginTop: "16px", fontSize: "14px", color: "#94a3b8", lineHeight: "1.7", maxWidth: "280px" }}>
+              {t.footer.description}
+            </p>
+
+            {/* Live System Online Badge */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "20px", padding: "6px 14px", backgroundColor: "rgba(16, 185, 129, 0.1)", border: "1px solid rgba(16, 185, 129, 0.25)", borderRadius: "20px" }}>
+              <span className="live-indicator-dot" />
+              <span style={{ fontSize: "12px", fontWeight: "700", color: "#10b981" }}>جميع الخوادم تعمل بنسبة 100%</span>
+            </div>
           </div>
+
+          {/* Links Col 1 */}
           <div>
-            <h3 style={{ marginBottom: "16px", fontSize: "13px", fontWeight: "700", color: "#888", letterSpacing: "1px", textTransform: "uppercase" }}>{t.footer.product}</h3>
+            <h3 style={{ marginBottom: "20px", fontSize: "13px", fontWeight: "800", color: "#f1f5f9", letterSpacing: "1px", textTransform: "uppercase" }}>
+              {t.footer.product}
+            </h3>
             <ul style={{ display: "flex", flexDirection: "column", gap: "12px", listStyle: "none", padding: 0, margin: 0 }}>
-              <li><Link href="/features" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.features}</Link></li>
-              <li><Link href="/docs" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.docs}</Link></li>
+              <li>
+                <Link href="/features" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none", transition: "color 0.2s" }}>
+                  {t.footer.features}
+                </Link>
+              </li>
+              <li>
+                <Link href="/docs" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none", transition: "color 0.2s" }}>
+                  {t.footer.docs}
+                </Link>
+              </li>
             </ul>
           </div>
+
+          {/* Links Col 2 */}
           <div>
-            <h3 style={{ marginBottom: "16px", fontSize: "13px", fontWeight: "700", color: "#888", letterSpacing: "1px", textTransform: "uppercase" }}>{t.footer.resources}</h3>
+            <h3 style={{ marginBottom: "20px", fontSize: "13px", fontWeight: "800", color: "#f1f5f9", letterSpacing: "1px", textTransform: "uppercase" }}>
+              {t.footer.resources}
+            </h3>
             <ul style={{ display: "flex", flexDirection: "column", gap: "12px", listStyle: "none", padding: 0, margin: 0 }}>
-              <li><Link href="/blog" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.blog}</Link></li>
-              <li><Link href="/changelog" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.changelog}</Link></li>
-              <li><Link href="/community" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.community}</Link></li>
+              <li>
+                <Link href="/docs" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none" }}>
+                  دليل البدء السريع
+                </Link>
+              </li>
+              <li>
+                <Link href="/features#overlays" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none" }}>
+                  روابط أوفراي OBS
+                </Link>
+              </li>
+              <li>
+                <Link href="/features#tts" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none" }}>
+                  إعدادات الـ TTS
+                </Link>
+              </li>
             </ul>
           </div>
+
+          {/* Links Col 3 */}
           <div>
-            <h3 style={{ marginBottom: "16px", fontSize: "13px", fontWeight: "700", color: "#888", letterSpacing: "1px", textTransform: "uppercase" }}>{t.footer.company}</h3>
+            <h3 style={{ marginBottom: "20px", fontSize: "13px", fontWeight: "800", color: "#f1f5f9", letterSpacing: "1px", textTransform: "uppercase" }}>
+              {t.footer.company}
+            </h3>
             <ul style={{ display: "flex", flexDirection: "column", gap: "12px", listStyle: "none", padding: 0, margin: 0 }}>
-              <li><Link href="/about" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.about}</Link></li>
-              <li><Link href="/contact" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.contact}</Link></li>
-              <li><Link href="/privacy" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.privacy}</Link></li>
-              <li><Link href="/terms" style={{ fontSize: "14px", color: "#555", textDecoration: "none" }}>{t.footer.terms}</Link></li>
+              <li>
+                <Link href="/about" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none" }}>
+                  {t.footer.about}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none" }}>
+                  {t.footer.terms}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" style={{ fontSize: "14px", color: "#94a3b8", textDecoration: "none" }}>
+                  {t.footer.privacy}
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
-        <div style={{ marginTop: "48px", paddingTop: "24px", borderTop: "1px solid #1a1a1a", textAlign: "center", fontSize: "13px", color: "#333" }}>
-          &copy; 2026 TOMAN. {t.footer.copyright}
+
+        {/* Bottom Bar */}
+        <div style={{ marginTop: "56px", paddingTop: "28px", borderTop: "1px solid rgba(255, 255, 255, 0.06)", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "16px", fontSize: "13px", color: "#64748b" }}>
+          <div>&copy; 2026 TOMAN Engine. {t.footer.copyright}</div>
+          <div style={{ display: "flex", gap: "20px" }}>
+            <span>Crafted for TikTok Streamers</span>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
+

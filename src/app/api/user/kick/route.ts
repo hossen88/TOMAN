@@ -4,24 +4,35 @@ export async function GET(request: NextRequest) {
   const username = request.nextUrl.searchParams.get("username");
 
   if (!username) {
-    return NextResponse.json({ error: "Username required" }, { status: 400 });
+    return NextResponse.json({ error: "اسم المستخدم مطلوب" }, { status: 400 });
   }
 
   try {
-    const cleanUsername = username.replace("@", "");
+    const cleanUsername = username.replace("@", "").trim();
 
     const channelRes = await fetch(`https://kick.com/api/v2/channels/${cleanUsername}`, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "Accept": "application/json",
       },
+      cache: "no-store",
     });
 
     if (!channelRes.ok) {
-      throw new Error("Channel not found");
+      return NextResponse.json(
+        { error: "حساب Kick هذا غير موجود. يرجى التأكد من اسم القناة والمحاولة مجدداً." },
+        { status: 404 }
+      );
     }
 
     const data = await channelRes.json();
+
+    if (!data || !data.user) {
+      return NextResponse.json(
+        { error: "حساب Kick هذا غير موجود. يرجى التأكد من اسم القناة والمحاولة مجدداً." },
+        { status: 404 }
+      );
+    }
 
     const userInfo = {
       username: cleanUsername,
@@ -45,22 +56,10 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error("Kick fetch error:", error);
-    return NextResponse.json({
-      username: username.replace("@", ""),
-      displayName: username.replace("@", ""),
-      avatar: "",
-      followers: 0,
-      following: 0,
-      likes: 0,
-      videos: 0,
-      isVerified: false,
-      bio: "",
-      isLive: false,
-      streamTitle: "",
-      viewerCount: 0,
-      bitrate: 0,
-      streamCategory: "",
-      totalStreamTime: 0,
-    });
+    return NextResponse.json(
+      { error: "تعذر الاتصال بقناة Kick. يرجى التأكد من اسم الحساب وتكرار المحاولة." },
+      { status: 500 }
+    );
   }
 }
+

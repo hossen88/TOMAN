@@ -11,43 +11,46 @@ export default function DocsPage() {
     {
       title: locale === "en" ? "Quick Start Guide" : "دليل البدء السريع",
       items: [
-        { title: locale === "en" ? "1. Create Your Account" : "١. أنشئ حسابك", content: locale === "en" ? "Sign up with your TikTok account. Takes less than 30 seconds." : "سجّل بحسابك على تيك توك. أقل من ٣٠ ثانية." },
-        { title: locale === "en" ? "2. Configure Sound Alerts" : "٢. كوّن التنبيهات الصوتية", content: locale === "en" ? "Upload your custom sounds and map them to gift types." : "ارفع أصواتك واربطها بأنواع الهدايا." },
-        { title: locale === "en" ? "3. Add Browser Sources" : "٣. أضف مصادر المتصفح", content: locale === "en" ? "Copy URLs from your dashboard and add to OBS or TikTok LIVE Studio." : "انسخ الروابط من لوحة التحكم وأضفها إلى OBS أو TikTok LIVE Studio." },
+        { title: locale === "en" ? "1. Create Your Account" : "1. أنشئ حسابك", content: locale === "en" ? "Sign up with your TikTok account. Takes less than 30 seconds." : "سجّل بحسابك على تيك توك. العملية تستغرق أقل من 30 ثانية." },
+        { title: locale === "en" ? "2. Configure Sound Alerts" : "2. كوّن التنبيهات الصوتية", content: locale === "en" ? "Upload your custom sounds and map them to gift types." : "ارفع أصواتك المخصصة واربطها بنوع الهدايا المناسب." },
+        { title: locale === "en" ? "3. Add Browser Sources" : "3. أضف مصادر المتصفح", content: locale === "en" ? "Copy URLs from your dashboard and add to OBS or TikTok LIVE Studio." : "انسخ الرابط المخصص من لوحة التحكم وأضفه كمصدر متصفح إلى OBS أو TikTok LIVE Studio." },
       ],
     },
     {
       title: locale === "en" ? "OBS Studio Setup" : "إعداد OBS Studio",
       items: [
-        { title: locale === "en" ? "Adding Browser Sources" : "إضافة مصادر المتصفح", content: locale === "en" ? 'Click "+" in Sources, select Browser, paste URL, set 1920x1080.' : 'اضغط "+" في المصادر، اختر Browser، الصق الرابط، عيّن ١٩٢٠x١٠٨٠.' },
+        { title: locale === "en" ? "Adding Browser Sources" : "إضافة مصادر المتصفح", content: locale === "en" ? 'Click "+" in Sources, select Browser, paste URL, set 1920x1080.' : 'اضغط "+" في قائمة المصادر، اختر Browser، الصق الرابط وعيّن الدقة إلى 1920x1080.' },
       ],
     },
     {
-      title: locale === "en" ? "Troubleshooting" : "حل المشاكل",
+      title: locale === "en" ? "Troubleshooting" : "حل المشاكل وإصلاح الأخطاء",
       items: [
-        { title: locale === "en" ? "Alerts Not Working" : "التنبيهات لا تعمل", content: locale === "en" ? "Check your TikTok connection and browser source status." : "تحقق من اتصال تيك توك وحالة مصدر المتصفح." },
-        { title: locale === "en" ? "TTS Not Playing" : "TTS لا يُشغّل", content: locale === "en" ? "Verify browser audio permissions and volume settings." : "تأكد من أذونات صوت المتصفح وإعدادات الصوت." },
+        { title: locale === "en" ? "Alerts Not Working" : "التنبيهات لا تعمل", content: locale === "en" ? "Check your TikTok connection and browser source status." : "تحقق من حالة الاتصال بحساب تيك توك وتأكد من استجابة رابط مصدر المتصفح." },
+        { title: locale === "en" ? "TTS Not Playing" : "الصوت الصوتية TTS لا يشتغل", content: locale === "en" ? "Verify browser audio permissions and volume settings." : "تأكد من تفعيل إذن تشغيل الصوت التلقائي في المتصفح ومستوى الصوت." },
       ],
     },
   ];
 
   return (
-    <div style={{ padding: "80px 24px", backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
+    <div style={{ padding: "80px 20px 100px", minHeight: "100vh" }}>
+      <div style={{ maxWidth: "860px", margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "64px" }}>
-          <h1 style={{ fontSize: "48px", fontWeight: "900", color: "#ffffff", letterSpacing: "-2px" }}>{t.docs.title}</h1>
-          <p style={{ marginTop: "16px", fontSize: "18px", color: "#888" }}>{t.docs.subtitle}</p>
+          <div style={{ display: "inline-block", padding: "6px 18px", borderRadius: "50px", fontSize: "12px", fontWeight: "700", color: "#38bdf8", backgroundColor: "rgba(56, 189, 248, 0.12)", border: "1px solid rgba(56, 189, 248, 0.35)", marginBottom: "16px" }}>
+            التوثيق والدعم الفني
+          </div>
+          <h1 style={{ fontSize: "clamp(32px, 4.5vw, 50px)", fontWeight: "800", color: "#ffffff", lineHeight: "1.35", letterSpacing: "0px" }}>{t.docs.title}</h1>
+          <p style={{ marginTop: "12px", fontSize: "17px", color: "#94a3b8", lineHeight: "1.7" }}>{t.docs.subtitle}</p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
           {sections.map((section) => (
             <div key={section.title}>
-              <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#ffffff", marginBottom: "20px" }}>{section.title}</h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <h2 style={{ fontSize: "22px", fontWeight: "800", color: "#ffffff", marginBottom: "20px", borderRight: "4px solid #e81548", paddingRight: "14px" }}>{section.title}</h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 {section.items.map((item) => (
-                  <div key={item.title} style={{ padding: "24px", backgroundColor: "#111", border: "1px solid #222", borderRadius: "16px" }}>
-                    <h3 style={{ fontSize: "16px", fontWeight: "600", color: "#ffffff", marginBottom: "8px" }}>{item.title}</h3>
-                    <p style={{ fontSize: "14px", lineHeight: "1.7", color: "#888" }}>{item.content}</p>
+                  <div key={item.title} className="glass-card" style={{ padding: "28px", borderRadius: "20px" }}>
+                    <h3 style={{ fontSize: "17px", fontWeight: "800", color: "#ffffff", marginBottom: "10px" }}>{item.title}</h3>
+                    <p style={{ fontSize: "15px", lineHeight: "1.8", color: "#94a3b8" }}>{item.content}</p>
                   </div>
                 ))}
               </div>
@@ -58,3 +61,4 @@ export default function DocsPage() {
     </div>
   );
 }
+

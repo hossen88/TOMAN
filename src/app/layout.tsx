@@ -28,7 +28,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
         <link rel="icon" type="image/png" href="/logo.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <style>{`
           @font-face {
             font-family: 'Stranger';
@@ -53,7 +53,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           }
         `}</style>
       </head>
-      <body style={{ fontFamily: "'Cairo', 'Inter', sans-serif", margin: 0, padding: 0, background: isOverlay ? "transparent" : "#0a0a0a" }}>
+      <body style={{ fontFamily: "'Alexandria', 'Cairo', 'Inter', sans-serif", margin: 0, padding: 0, background: isOverlay ? "transparent" : "#0a0a0a" }}>
+
         {!isOverlay && <Navbar />}
         <main>{children}</main>
         {!isOverlay && <Footer />}
