@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useI18n } from "@/i18n/context";
 import { GlobeIcon, UsersIcon, ShieldIcon } from "@/components/Icons";
 

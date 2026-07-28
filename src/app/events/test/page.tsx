@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState, useEffect } from "react";
 
 const demoNames = ["أحمد", "سارة", "عمر", "ليلى", "يوسف", "نور", "علي", "فاطمة", "محمد", "خالد", "ريم", "حسن"];
