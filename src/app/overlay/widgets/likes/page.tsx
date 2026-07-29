@@ -31,23 +31,38 @@ export default function LikesWidget() {
   }, []);
 
   const userLikesMapRef = useRef<{ [key: string]: number }>({});
+  const roomLikesAccumulatorRef = useRef<number>(0);
 
   const processLike = useCallback((displayName: string, rawAvatar: string, batchCount: number, uniqueId: string) => {
     const targetThreshold = 250;
-    const id = uniqueId || displayName || "guest";
-    const current = (userLikesMapRef.current[id] || 0) + (batchCount || 1);
+    const count = Math.max(1, batchCount || 1);
+    const rawId = uniqueId || displayName || "";
+    const id = rawId ? rawId.toString().toLowerCase().trim() : "anonymous";
+    const name = displayName || uniqueId || "مكبس البث";
 
-    if (current >= targetThreshold) {
-      userLikesMapRef.current[id] = current % targetThreshold;
+    const userCurrent = (userLikesMapRef.current[id] || 0) + count;
+    userLikesMapRef.current[id] = userCurrent;
+
+    roomLikesAccumulatorRef.current += count;
+
+    if (userCurrent >= targetThreshold) {
+      userLikesMapRef.current[id] = userCurrent % targetThreshold;
+      roomLikesAccumulatorRef.current = 0;
       setLikes(targetThreshold);
       setAvatar(rawAvatar);
       setShow(true);
       setWidgetKey((k) => k + 1);
       hideAfter(duration);
-    } else {
-      userLikesMapRef.current[id] = current;
+    } else if (roomLikesAccumulatorRef.current >= targetThreshold) {
+      roomLikesAccumulatorRef.current = roomLikesAccumulatorRef.current % targetThreshold;
+      userLikesMapRef.current[id] = 0;
+      setLikes(targetThreshold);
+      setAvatar(rawAvatar);
+      setShow(true);
+      setWidgetKey((k) => k + 1);
+      hideAfter(duration);
     }
-  }, [duration, hideAfter, likeThreshold]);
+  }, [duration, hideAfter]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

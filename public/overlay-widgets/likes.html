@@ -73,8 +73,13 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
   function show(nameStr, avatarUrl, countVal){
     if (labelEl) labelEl.textContent = nameStr || "المكبس";
     countEl.textContent = '+' + (countVal || threshold);
-    if (avatarUrl) { avatarEl.src = avatarUrl; avatarEl.style.display = ''; }
-    else { avatarEl.style.display = 'none'; }
+    if (avatarUrl) {
+      avatarEl.referrerPolicy = "no-referrer";
+      avatarEl.src = avatarUrl;
+      avatarEl.style.display = '';
+    } else {
+      avatarEl.style.display = 'none';
+    }
     pill.classList.remove('show');
     void pill.offsetWidth;
     pill.classList.add('show');
@@ -87,15 +92,30 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
   var clean = username.replace("@", "").trim();
 
   var userLikesMap = {};
+  var roomLikesAccumulator = 0;
 
   function processLike(displayName, avatarUrl, batchCount, uniqueId) {
-    var id = uniqueId || displayName || "guest";
-    var current = (userLikesMap[id] || 0) + (batchCount || 1);
-    if (current >= threshold) {
-      userLikesMap[id] = current % threshold;
-      show(displayName, avatarUrl, threshold);
-    } else {
-      userLikesMap[id] = current;
+    var count = parseInt(batchCount, 10) || 1;
+    var rawId = uniqueId || displayName || "";
+    var id = rawId ? rawId.toString().toLowerCase().trim() : "anonymous";
+    var name = displayName || uniqueId || "مكبس البث";
+
+    // 1. Track per-user accumulated likes
+    var userCurrent = (userLikesMap[id] || 0) + count;
+    userLikesMap[id] = userCurrent;
+
+    // 2. Track room-wide accumulated likes
+    roomLikesAccumulator += count;
+
+    // Trigger if specific user reaches threshold OR overall room accumulator reaches threshold
+    if (userCurrent >= threshold) {
+      userLikesMap[id] = userCurrent % threshold;
+      roomLikesAccumulator = 0;
+      show(name, avatarUrl, threshold);
+    } else if (roomLikesAccumulator >= threshold) {
+      roomLikesAccumulator = roomLikesAccumulator % threshold;
+      userLikesMap[id] = 0;
+      show(name, avatarUrl, threshold);
     }
   }
 
