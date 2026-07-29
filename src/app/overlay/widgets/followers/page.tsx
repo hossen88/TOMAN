@@ -94,7 +94,7 @@ export default function FollowerWidget() {
           if (!active) return;
           if (d.followers && d.followers > 0) {
             if (lastFollowerCount > 0 && d.followers > lastFollowerCount) {
-              showWidget(d.displayName || clean, d.avatar || "");
+              showWidget("متابع جديد!", "");
             }
             lastFollowerCount = d.followers;
           }

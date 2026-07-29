@@ -85,7 +85,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
       .then(function(d) {
         if (d.followers && d.followers > 0) {
           if (lastFollowerCount > 0 && d.followers > lastFollowerCount) {
-            show(d.displayName || clean, d.avatar || "");
+            show("متابع جديد!", "");
           }
           lastFollowerCount = d.followers;
         }
