@@ -82,10 +82,31 @@ export default function LikesWidget() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const username = params.get("user");
+    const username = params.get("user") || (typeof window !== "undefined" ? localStorage.getItem("username") || "" : "");
     if (!username) return;
     const clean = username.replace("@", "").trim();
     let active = true;
+
+    // Stat polling backup
+    let lastLikeCount = 0;
+    const checkLikeStat = () => {
+      fetch("/api/user/tiktok?username=" + clean + "&_t=" + Date.now())
+        .then((r) => r.json())
+        .then((d) => {
+          if (!active) return;
+          if (d.likes && d.likes > 0) {
+            if (lastLikeCount > 0 && d.likes > lastLikeCount) {
+              const diff = d.likes - lastLikeCount;
+              showWidget(diff, d.avatar || "");
+            }
+            lastLikeCount = d.likes;
+          }
+        })
+        .catch(() => {});
+    };
+
+    checkLikeStat();
+    const statInterval = setInterval(checkLikeStat, 10000);
 
     const poll = async () => {
       if (!active) return;
@@ -102,19 +123,8 @@ export default function LikesWidget() {
         }
       } catch (e) {}
     };
-    const pollInterval = setInterval(poll, 500);
-    return () => {
-      active = false;
-      clearInterval(pollInterval);
-    };
-  }, [showWidget]);
+    const pollInterval = setInterval(poll, 1000);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const username = params.get("user");
-    if (!username) return;
-    const clean = username.replace("@", "").trim();
-    let active = true;
     let retryCount = 0;
     let evtSource: EventSource | null = null;
 
@@ -122,6 +132,7 @@ export default function LikesWidget() {
       if (!active) return;
       try {
         const base = typeof window !== "undefined" ? window.location.origin : "";
+        if (evtSource) evtSource.close();
         evtSource = new EventSource(base + "/api/tiktok/live-events?user=" + clean);
         evtSource.onopen = () => {
           retryCount = 0;
@@ -139,7 +150,7 @@ export default function LikesWidget() {
         evtSource.onerror = () => {
           if (!active) return;
           evtSource?.close();
-          const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 15000);
           retryCount++;
           setTimeout(connect, delay);
         };
@@ -152,6 +163,8 @@ export default function LikesWidget() {
 
     return () => {
       active = false;
+      clearInterval(statInterval);
+      clearInterval(pollInterval);
       evtSource?.close();
     };
   }, [showWidget]);

@@ -80,10 +80,30 @@ export default function FollowerWidget() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const username = params.get("user");
+    const username = params.get("user") || (typeof window !== "undefined" ? localStorage.getItem("username") || "" : "");
     if (!username) return;
     const clean = username.replace("@", "").trim();
     let active = true;
+
+    // Stat polling backup
+    let lastFollowerCount = 0;
+    const checkFollowerStat = () => {
+      fetch("/api/user/tiktok?username=" + clean + "&_t=" + Date.now())
+        .then((r) => r.json())
+        .then((d) => {
+          if (!active) return;
+          if (d.followers && d.followers > 0) {
+            if (lastFollowerCount > 0 && d.followers > lastFollowerCount) {
+              showWidget("متابع جديد!", d.avatar || "");
+            }
+            lastFollowerCount = d.followers;
+          }
+        })
+        .catch(() => {});
+    };
+
+    checkFollowerStat();
+    const statInterval = setInterval(checkFollowerStat, 10000);
 
     const poll = async () => {
       if (!active) return;
@@ -100,19 +120,8 @@ export default function FollowerWidget() {
         }
       } catch (e) {}
     };
-    const pollInterval = setInterval(poll, 500);
-    return () => {
-      active = false;
-      clearInterval(pollInterval);
-    };
-  }, [showWidget]);
+    const pollInterval = setInterval(poll, 1000);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const username = params.get("user");
-    if (!username) return;
-    const clean = username.replace("@", "").trim();
-    let active = true;
     let retryCount = 0;
     let evtSource: EventSource | null = null;
 
@@ -120,6 +129,7 @@ export default function FollowerWidget() {
       if (!active) return;
       try {
         const base = typeof window !== "undefined" ? window.location.origin : "";
+        if (evtSource) evtSource.close();
         evtSource = new EventSource(base + "/api/tiktok/live-events?user=" + clean);
         evtSource.onopen = () => {
           retryCount = 0;
@@ -130,14 +140,14 @@ export default function FollowerWidget() {
             const data = JSON.parse(event.data);
             if (data.connected) return;
             if (data.type === "follower") {
-              showWidget(data.displayName || "New Follower", data.avatar || "");
+              showWidget(data.displayName || "متابع جديد", data.avatar || "");
             }
           } catch (e) {}
         };
         evtSource.onerror = () => {
           if (!active) return;
           evtSource?.close();
-          const delay = Math.min(1000 * Math.pow(2, retryCount), 30000);
+          const delay = Math.min(1000 * Math.pow(2, retryCount), 15000);
           retryCount++;
           setTimeout(connect, delay);
         };
@@ -150,6 +160,8 @@ export default function FollowerWidget() {
 
     return () => {
       active = false;
+      clearInterval(statInterval);
+      clearInterval(pollInterval);
       evtSource?.close();
     };
   }, [showWidget]);
