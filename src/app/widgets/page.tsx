@@ -684,14 +684,17 @@ export default function WidgetsPage() {
                     <span style={{ fontSize: "11px", color: "#5865F2", fontWeight: "700" }}>● يعمل دائماً بشكل سينمائي مستمر</span>
                   )}
                   {widget.id === "likes" && (
-                    <input
-                      type="number"
-                      min={0}
-                      value={thresholds.likes || 0}
-                      onChange={(e) => setThreshold("likes", parseInt(e.target.value) || 0)}
-                      placeholder="0"
-                      style={{ width: "50px", padding: "3px 6px", background: "#1a1a1a", border: "1px solid #333", borderRadius: "6px", color: "#fff", fontSize: "11px", outline: "none" }}
-                    />
+                    <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                      <span style={{ fontSize: "10px", color: "#888" }}>حد التكبيس:</span>
+                      <input
+                        type="number"
+                        min={1}
+                        value={thresholds.likes !== undefined ? thresholds.likes : ""}
+                        onChange={(e) => setThreshold("likes", parseInt(e.target.value) || 0)}
+                        placeholder="10"
+                        style={{ width: "60px", padding: "3px 6px", background: "#1a1a1a", border: "1px solid #333", borderRadius: "6px", color: "#fff", fontSize: "11px", outline: "none" }}
+                      />
+                    </div>
                   )}
                 </div>
 

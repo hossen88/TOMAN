@@ -33,7 +33,7 @@ export default function LikesWidget() {
   const userLikesMapRef = useRef<{ [key: string]: number }>({});
 
   const processLike = useCallback((displayName: string, rawAvatar: string, batchCount: number, uniqueId: string) => {
-    const targetThreshold = likeThreshold > 0 ? likeThreshold : 250;
+    const targetThreshold = likeThreshold > 0 ? likeThreshold : 1;
     const id = uniqueId || displayName || "guest";
     const current = (userLikesMapRef.current[id] || 0) + (batchCount || 1);
 
