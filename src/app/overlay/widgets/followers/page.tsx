@@ -94,7 +94,7 @@ export default function FollowerWidget() {
           if (!active) return;
           if (d.followers && d.followers > 0) {
             if (lastFollowerCount > 0 && d.followers > lastFollowerCount) {
-              showWidget("متابع جديد!", d.avatar || "");
+              showWidget(d.displayName || clean, d.avatar || "");
             }
             lastFollowerCount = d.followers;
           }
@@ -140,7 +140,7 @@ export default function FollowerWidget() {
             const data = JSON.parse(event.data);
             if (data.connected) return;
             if (data.type === "follower") {
-              showWidget(data.displayName || "متابع جديد", data.avatar || "");
+              showWidget(data.displayName || data.uniqueId || "New Follower", data.avatar || "");
             }
           } catch (e) {}
         };

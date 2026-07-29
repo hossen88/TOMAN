@@ -85,7 +85,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
       .then(function(d) {
         if (d.followers && d.followers > 0) {
           if (lastFollowerCount > 0 && d.followers > lastFollowerCount) {
-            show("متابع جديد!", d.avatar || "");
+            show(d.displayName || clean, d.avatar || "");
           }
           lastFollowerCount = d.followers;
         }
@@ -119,7 +119,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
           var data = JSON.parse(ev.data);
           if (data.connected) return;
           if (data.type === "follower") {
-            show(data.displayName || "متابع جديد", data.avatar || "");
+            show(data.displayName || data.uniqueId || "New Follower", data.avatar || "");
           }
         } catch(e) {}
       };
