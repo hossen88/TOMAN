@@ -139,24 +139,26 @@ async function connectToLive(username: string) {
   });
 
   connection.on(WebcastEvent.LIKE, async (data: any) => {
-    const user = data?.user || data?.data?.user;
-    if (!user) return;
-
+    const user = data?.user || data?.data?.user || data || {};
+    const uniqueId = user.uniqueId || user.userId || user.uid || data.uniqueId || "";
+    const nickname = user.nickname || user.displayName || uniqueId || "المكبس";
     const batchCount = data?.likeCount || data?.count || 1;
+
     const prevCount = likeCounts.get(username) || 0;
     const newCount = prevCount + batchCount;
     likeCounts.set(username, newCount);
 
     let avatar = user.avatarThumb || user.avatarMedium || user.avatarLarge || "";
-    if (!avatar && user.uniqueId) avatar = await fetchAvatar(user.uniqueId);
+    if (!avatar && uniqueId) avatar = await fetchAvatar(uniqueId);
 
-    console.log(`[LIKE] @${user.nickname} batch=${batchCount} total=${newCount}`);
+    console.log(`[LIKE] @${nickname} batch=${batchCount} total=${newCount}`);
 
     sendEvent(username, {
       type: "like",
-      displayName: user.nickname || user.uniqueId || "New Like",
+      displayName: nickname,
       avatar,
-      uniqueId: user.uniqueId || "",
+      uniqueId,
+      likeCount: batchCount,
       totalLikes: newCount,
       timestamp: Date.now(),
     });

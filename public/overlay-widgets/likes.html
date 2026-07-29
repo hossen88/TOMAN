@@ -71,10 +71,12 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
   var hideTimer = null;
 
   function show(nameStr, avatarUrl, countVal){
-    if (labelEl) labelEl.textContent = nameStr || "New Like!";
+    if (labelEl) labelEl.textContent = nameStr || "المكبس";
     countEl.textContent = '+' + (countVal || threshold);
     if (avatarUrl) { avatarEl.src = avatarUrl; avatarEl.style.display = ''; }
     else { avatarEl.style.display = 'none'; }
+    pill.classList.remove('show');
+    void pill.offsetWidth;
     pill.classList.add('show');
     if (hideTimer) clearTimeout(hideTimer);
     hideTimer = setTimeout(function(){ pill.classList.remove('show'); }, duration);
