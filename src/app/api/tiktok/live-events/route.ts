@@ -7,13 +7,10 @@ const activeConnections = new Map<string, any>();
 const likeCounts = new Map<string, number>();
 let mod: any = null;
 
-const SIGN_SERVER_URL = process.env.SIGN_API_URL || "http://localhost:3099";
-
-// Point tiktok-live-connector to our local EulerStream proxy instead of EulerStream
-if (!process.env.SIGN_API_URL) {
-  process.env.SIGN_API_URL = SIGN_SERVER_URL;
+// Optional SIGN_API_URL configuration if specified in env
+if (process.env.SIGN_API_URL) {
+  console.log(`[TikTokWS] Sign server: ${process.env.SIGN_API_URL}`);
 }
-console.log(`[TikTokWS] Sign server: ${process.env.SIGN_API_URL}`);
 
 async function loadMod() {
   if (!mod) mod = await import("tiktok-live-connector");
@@ -91,10 +88,8 @@ async function connectToLive(username: string) {
   console.log(`[TikTokWS] Creating connection for @${username}...`);
 
   const connection = new TikTokLiveConnection(username, {
-    disableEulerFallbacks: true,
-    fetchRoomInfoOnConnect: false,
     processInitialData: true,
-    enableRequestPolling: false,
+    enableRequestPolling: true,
   });
 
   connection.on(ControlEvent.CONNECTED, () => {
