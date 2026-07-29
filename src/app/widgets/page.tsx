@@ -571,8 +571,7 @@ export default function WidgetsPage() {
 
   const getUrl = (w: typeof widgets[0]) => {
     if (typeof window === "undefined") return "";
-    const t = thresholds[w.id] || 0;
-    return `${window.location.origin}${w.path}?user=${username || "YOUR"}&color=${encodeURIComponent(getColor(w))}&duration=${durations[w.id] || 10}${t > 0 ? `&threshold=${t}` : ""}`;
+    return `${window.location.origin}${w.path}?user=${username || "YOUR"}&color=${encodeURIComponent(getColor(w))}&duration=${durations[w.id] || 10}`;
   };
 
   const copyUrl = (w: typeof widgets[0]) => {
@@ -682,9 +681,6 @@ export default function WidgetsPage() {
                   )}
                   {widget.id === "discord" && (
                     <span style={{ fontSize: "11px", color: "#5865F2", fontWeight: "700" }}>● يعمل دائماً بشكل سينمائي مستمر</span>
-                  )}
-                  {widget.id === "likes" && (
-                    <span style={{ fontSize: "11px", color: "#ec4899", fontWeight: "700" }}>● مثبت عند 250 تكبيسة</span>
                   )}
                 </div>
 
