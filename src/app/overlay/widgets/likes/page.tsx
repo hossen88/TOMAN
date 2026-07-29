@@ -30,13 +30,23 @@ export default function LikesWidget() {
     hideTimerRef.current = setTimeout(() => setShow(false), seconds * 1000);
   }, []);
 
-  const showWidget = useCallback((count: number, rawAvatar: string) => {
-    if (likeThreshold > 0 && count < likeThreshold) return;
-    setLikes(count);
-    setAvatar(rawAvatar);
-    setShow(true);
-    setWidgetKey((k) => k + 1);
-    hideAfter(duration);
+  const userLikesMapRef = useRef<{ [key: string]: number }>({});
+
+  const processLike = useCallback((displayName: string, rawAvatar: string, batchCount: number, uniqueId: string) => {
+    const targetThreshold = likeThreshold > 0 ? likeThreshold : 250;
+    const id = uniqueId || displayName || "guest";
+    const current = (userLikesMapRef.current[id] || 0) + (batchCount || 1);
+
+    if (current >= targetThreshold) {
+      userLikesMapRef.current[id] = current % targetThreshold;
+      setLikes(targetThreshold);
+      setAvatar(rawAvatar);
+      setShow(true);
+      setWidgetKey((k) => k + 1);
+      hideAfter(duration);
+    } else {
+      userLikesMapRef.current[id] = current;
+    }
   }, [duration, hideAfter, likeThreshold]);
 
   useEffect(() => {
@@ -51,8 +61,9 @@ export default function LikesWidget() {
 
     if (params.get("demo") === "true") {
       const dur = d ? parseInt(d) : 10;
+      const targetThreshold = t ? parseInt(t) : 250;
       const showDemo = () => {
-        setLikes(Math.floor(Math.random() * 50) + 1);
+        setLikes(targetThreshold);
         setAvatar("");
         setShow(true);
         setWidgetKey((k) => k + 1);
@@ -97,7 +108,7 @@ export default function LikesWidget() {
           if (d.likes && d.likes > 0) {
             if (lastLikeCount > 0 && d.likes > lastLikeCount) {
               const diff = d.likes - lastLikeCount;
-              showWidget(diff, d.avatar || "");
+              processLike("تكبيس الجماعة", "", diff, "group");
             }
             lastLikeCount = d.likes;
           }
@@ -114,7 +125,10 @@ export default function LikesWidget() {
         const res = await fetch("/api/widgets/state?widget=likes&_t=" + Date.now());
         const data = await res.json();
         if (data.demo) {
-          showWidget(Math.floor(Math.random() * 50) + 1, "");
+          const targetThreshold = likeThreshold > 0 ? likeThreshold : 250;
+          setLikes(targetThreshold);
+          setShow(true);
+          setWidgetKey((k) => k + 1);
           await fetch("/api/widgets/state", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -143,7 +157,7 @@ export default function LikesWidget() {
             const data = JSON.parse(event.data);
             if (data.connected) return;
             if (data.type === "like") {
-              showWidget(data.totalLikes || 1, data.avatar || "");
+              processLike(data.displayName || data.uniqueId || "المكبس", data.avatar || "", data.likeCount || 1, data.uniqueId || data.displayName);
             }
           } catch (e) {}
         };
@@ -167,7 +181,7 @@ export default function LikesWidget() {
       clearInterval(pollInterval);
       evtSource?.close();
     };
-  }, [showWidget]);
+  }, [processLike, likeThreshold]);
 
   if (!show) return null;
 

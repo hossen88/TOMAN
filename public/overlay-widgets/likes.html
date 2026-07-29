@@ -62,20 +62,43 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
   document.getElementById('labelEl').style.color=color+'cc';
   document.getElementById('count').style.textShadow='0 0 10px '+color+'30';
   document.getElementById('thanksEl').style.textShadow='0 0 12px '+color+'60';
-  var pill=document.getElementById('pill');
-  var countEl=document.getElementById('count');
-  var hideTimer=null;
-  function show(count){
-    countEl.textContent='+'+count;
+  var threshold = parseInt(params.get('threshold') || '250', 10);
+  if (isNaN(threshold) || threshold < 1) threshold = 250;
+
+  var pill = document.getElementById('pill');
+  var countEl = document.getElementById('count');
+  var avatarEl = document.getElementById('avatar');
+  var labelEl = document.getElementById('labelEl');
+  var hideTimer = null;
+
+  function show(nameStr, avatarUrl, countVal){
+    if (labelEl) labelEl.textContent = nameStr || "New Like!";
+    countEl.textContent = '+' + (countVal || threshold);
+    if (avatarUrl) { avatarEl.src = avatarUrl; avatarEl.style.display = ''; }
+    else { avatarEl.style.display = 'none'; }
     pill.classList.add('show');
-    if(hideTimer)clearTimeout(hideTimer);
-    hideTimer=setTimeout(function(){pill.classList.remove('show');},duration);
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(function(){ pill.classList.remove('show'); }, duration);
   }
+
   var username = params.get('user') || (function(){ try { return localStorage.getItem('username') || ''; } catch(e){ return ''; } })();
   if (!username) return;
   var clean = username.replace("@", "").trim();
 
-  // Dual System Backup: Stat Polling to detect new likes even if WebSocket disconnects
+  var userLikesMap = {};
+
+  function processLike(displayName, avatarUrl, batchCount, uniqueId) {
+    var id = uniqueId || displayName || "guest";
+    var current = (userLikesMap[id] || 0) + (batchCount || 1);
+    if (current >= threshold) {
+      userLikesMap[id] = current % threshold;
+      show(displayName, avatarUrl, threshold);
+    } else {
+      userLikesMap[id] = current;
+    }
+  }
+
+  // Stat polling backup for global likes increase
   var lastLikeCount = 0;
   function checkLikeStat() {
     fetch("/api/user/tiktok?username=" + clean + "&_t=" + Date.now())
@@ -84,7 +107,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
         if (d.likes && d.likes > 0) {
           if (lastLikeCount > 0 && d.likes > lastLikeCount) {
             var diff = d.likes - lastLikeCount;
-            show(diff);
+            processLike("تكبيس الجماعة", "", diff, "group");
           }
           lastLikeCount = d.likes;
         }
@@ -99,7 +122,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
     .then(function(r){return r.json();})
     .then(function(d){
       if(d.demo){
-        show(Math.floor(Math.random()*50)+1);
+        show("داعم التكبيس", "", threshold);
         fetch("/api/widgets/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({widget:"likes",demo:false})});
       }
     }).catch(function(){});
@@ -117,7 +140,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
           var data = JSON.parse(ev.data);
           if (data.connected) return;
           if (data.type === "like") {
-            show(data.totalLikes || 1);
+            processLike(data.displayName || data.uniqueId || "المكبس", data.avatar || "", data.likeCount || 1, data.uniqueId || data.displayName);
           }
         } catch(e) {}
       };

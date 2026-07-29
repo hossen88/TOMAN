@@ -83,31 +83,65 @@ pill.classList.add('show');
 if(hideTimer)clearTimeout(hideTimer);
 hideTimer=setTimeout(function(){pill.classList.remove('show');},duration);
 }
-var username=params.get('user');
-if(!username)return;
-var clean=username.replace("@","").trim();
-setInterval(function(){
-fetch("/api/widgets/state?widget=top-rankers&_t="+Date.now())
-.then(function(r){return r.json();})
-.then(function(d){
-if(d.demo){
-show([{name:"أحمد",score:150,avatar:""},{name:"سارة",score:120,avatar:""},{name:"عمر",score:90,avatar:""}]);
-fetch("/api/widgets/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({widget:"top-rankers",demo:false})});
-}
-}).catch(function(){});
-},500);
-var retryCount=0;var evtSource=null;
-function connect(){
-try{
-evtSource=new EventSource(window.location.origin+"/api/tiktok/live-events?user="+clean);
-evtSource.onopen=function(){retryCount=0;};
-evtSource.onmessage=function(ev){
-try{var data=JSON.parse(ev.data);if(data.connected)return;if(data.type==="top-rankers"&&data.rankers){show(data.rankers);}}catch(e){}
-};
-evtSource.onerror=function(){evtSource.close();var delay=Math.min(1000*Math.pow(2,retryCount),30000);retryCount++;setTimeout(connect,delay);};
-}catch(e){setTimeout(connect,3000);}
-}
-connect();
+  var username = params.get('user') || (function(){ try { return localStorage.getItem('username') || ''; } catch(e){ return ''; } })();
+  if (!username) return;
+  var clean = username.replace("@", "").trim();
+
+  var userScores = {};
+  function updateRankerScore(uid, name, avatar, points) {
+    if (!uid) return;
+    if (!userScores[uid]) {
+      userScores[uid] = { name: name || uid, score: 0, avatar: avatar || "" };
+    }
+    userScores[uid].score += (points || 1);
+    if (avatar && !userScores[uid].avatar) userScores[uid].avatar = avatar;
+
+    var sorted = Object.values(userScores).sort(function(a,b){ return b.score - a.score; }).slice(0,3);
+    if (sorted.length > 0) show(sorted);
+  }
+
+  // Initial show with demo data until live events accumulate
+  show([{name:"أحمد",score:150,avatar:""},{name:"سارة",score:120,avatar:""},{name:"عمر",score:90,avatar:""}]);
+
+  setInterval(function(){
+    fetch("/api/widgets/state?widget=top-rankers&_t="+Date.now())
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.demo){
+        show([{name:"أحمد",score:150,avatar:""},{name:"سارة",score:120,avatar:""},{name:"عمر",score:90,avatar:""}]);
+        fetch("/api/widgets/state",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({widget:"top-rankers",demo:false})});
+      }
+    }).catch(function(){});
+  },1000);
+
+  var retryCount=0;var evtSource=null;
+  function connect(){
+    try{
+      if (evtSource) evtSource.close();
+      evtSource=new EventSource(window.location.origin+"/api/tiktok/live-events?user="+clean);
+      evtSource.onopen=function(){retryCount=0;};
+      evtSource.onmessage=function(ev){
+        try{
+          var data=JSON.parse(ev.data);
+          if(data.connected)return;
+          if (data.type === "top-rankers" && data.rankers) {
+            show(data.rankers);
+          } else if (data.type === "follower" || data.type === "like" || data.type === "chat" || data.type === "gift") {
+            var uid = data.uniqueId || data.displayName;
+            var pts = data.type === "gift" ? (data.giftCount || 1) : 1;
+            updateRankerScore(uid, data.displayName, data.avatar, pts);
+          }
+        }catch(e){}
+      };
+      evtSource.onerror=function(){
+        if (evtSource) evtSource.close();
+        var delay=Math.min(1000*Math.pow(2,retryCount),15000);
+        retryCount++;
+        setTimeout(connect,delay);
+      };
+    }catch(e){setTimeout(connect,3000);}
+  }
+  connect();
 })();
 </script>
 </body>

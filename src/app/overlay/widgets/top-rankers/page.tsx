@@ -91,10 +91,14 @@ export default function TopRankersWidget() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const username = params.get("user");
+    const username = params.get("user") || (typeof window !== "undefined" ? localStorage.getItem("username") || "" : "");
     if (!username) return;
     const clean = username.replace("@", "").trim();
     let active = true;
+
+    // Show initial top rankers so widget is visible right away
+    setTopUsers(demoUsers);
+    setShow(true);
 
     const poll = async () => {
       if (!active) return;
