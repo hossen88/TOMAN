@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 const widgets = [
   { id: "discord", title: "ودجت سيرفر الديسكورد", desc: "ودجت يتغير حركياً بين شعار المنصة ورابط الديسكورد https://discord.gg/gEPzAVkv4E", defaultColor: "#5865F2", path: "/overlay-widgets/discord.html" },
   { id: "followers", title: "المتابعة", desc: "يظهر اسم newest متابع مع صورته", defaultColor: "#a855f7", path: "/overlay-widgets/followers.html" },
-  { id: "likes", title: "آخر إعجاب", desc: "يظهر إشعار عند كل إعجاب جديد", defaultColor: "#ec4899", path: "/overlay-widgets/likes.html" },
+  { id: "likes", title: "آخر إعجاب", desc: "يظهر إشعار عند وصول المتابع إلى 250 تكبيسة", defaultColor: "#ec4899", path: "/overlay-widgets/likes.html" },
   { id: "top-rankers", title: "أفضل 3 في البث الحالي", desc: "يعرض أفضل 3 متابعين حسب التفاعل في البث", defaultColor: "#f59e0b", path: "/overlay-widgets/top-rankers.html" },
   { id: "total-followers", title: "إجمالي المتابعين", desc: "يعرض العدد الكلي للمتابعين مع تحديث لحظي", defaultColor: "#a51538", path: "/overlay-widgets/total-followers.html" },
 ];
@@ -684,17 +684,7 @@ export default function WidgetsPage() {
                     <span style={{ fontSize: "11px", color: "#5865F2", fontWeight: "700" }}>● يعمل دائماً بشكل سينمائي مستمر</span>
                   )}
                   {widget.id === "likes" && (
-                    <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                      <span style={{ fontSize: "10px", color: "#888" }}>حد التكبيس:</span>
-                      <input
-                        type="number"
-                        min={1}
-                        value={thresholds.likes !== undefined ? thresholds.likes : ""}
-                        onChange={(e) => setThreshold("likes", parseInt(e.target.value) || 0)}
-                        placeholder="10"
-                        style={{ width: "60px", padding: "3px 6px", background: "#1a1a1a", border: "1px solid #333", borderRadius: "6px", color: "#fff", fontSize: "11px", outline: "none" }}
-                      />
-                    </div>
+                    <span style={{ fontSize: "11px", color: "#ec4899", fontWeight: "700" }}>● مثبت عند 250 تكبيسة</span>
                   )}
                 </div>
 

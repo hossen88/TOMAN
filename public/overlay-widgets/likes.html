@@ -62,8 +62,7 @@ body{background:transparent;font-family:'Segoe UI',sans-serif;overflow:hidden}
   document.getElementById('labelEl').style.color=color+'cc';
   document.getElementById('count').style.textShadow='0 0 10px '+color+'30';
   document.getElementById('thanksEl').style.textShadow='0 0 12px '+color+'60';
-  var threshold = parseInt(params.get('threshold') || '1', 10);
-  if (isNaN(threshold) || threshold < 1) threshold = 1;
+  var threshold = 250;
 
   var pill = document.getElementById('pill');
   var countEl = document.getElementById('count');
